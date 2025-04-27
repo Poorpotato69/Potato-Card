@@ -261,53 +261,58 @@
     </audio>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const audio = document.getElementById('backgroundMusic');
-            const audioControl = document.getElementById('audioControl');
-            let isPlaying = false;
-
-            // Try to play audio automatically (may be blocked by browser)
-            const playAudio = () => {
-                audio.play()
-                    .then(() => {
-                        isPlaying = true;
-                        audioControl.textContent = '🔊';
-                        audioControl.classList.remove('muted');
-                    })
-                    .catch(error => {
-                        console.log('Auto-play was prevented:', error);
-                        isPlaying = false;
-                        audioControl.textContent = '🔇';
-                        audioControl.classList.add('muted');
-                    });
-            };
-
-            // Initial play attempt
-            playAudio();
-
-            // Toggle audio on button click
-            audioControl.addEventListener('click', function() {
-                if (isPlaying) {
-                    audio.pause();
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('backgroundMusic');
+        const audioControl = document.getElementById('audioControl');
+        let isPlaying = true; // Set default to playing
+        
+        // Set volume to 50% by default to be less intrusive
+        audio.volume = 0.5;
+        
+        // Auto-play with fallback for browser restrictions
+        const playAudio = () => {
+            audio.play()
+                .then(() => {
+                    isPlaying = true;
+                    audioControl.textContent = '🔊';
+                    audioControl.classList.remove('muted');
+                })
+                .catch(error => {
+                    console.log('Auto-play was prevented:', error);
+                    isPlaying = false;
                     audioControl.textContent = '🔇';
                     audioControl.classList.add('muted');
-                    isPlaying = false;
-                } else {
-                    audio.play()
-                        .then(() => {
-                            audioControl.textContent = '🔊';
-                            audioControl.classList.remove('muted');
-                            isPlaying = true;
-                        });
-                }
-            });
-
-            // Handle when audio ends (though it should loop)
-            audio.addEventListener('ended', function() {
-                audio.currentTime = 0;
-                audio.play();
-            });
+                });
+        };
+        
+        // Start playing immediately
+        playAudio();
+        
+        // Toggle audio on button click
+        audioControl.addEventListener('click', function() {
+            if (isPlaying) {
+                audio.pause();
+                audioControl.textContent = '🔇';
+                audioControl.classList.add('muted');
+                isPlaying = false;
+            } else {
+                audio.play()
+                    .then(() => {
+                        audioControl.textContent = '🔊';
+                        audioControl.classList.remove('muted');
+                        isPlaying = true;
+                    });
+            }
         });
-    </script>
+        
+        // Ensure looping works
+        audio.addEventListener('ended', function() {
+            audio.currentTime = 0;
+            if (isPlaying) {
+                audio.play();
+            }
+        });
+    });
+</script>
 </body>
 </html>
