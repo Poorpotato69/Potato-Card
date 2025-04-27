@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potato's Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('http://localhost/test/wp-content/uploads/2025/04/Background-potato-card.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .bio {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.4;
+            font-style: italic;
+        }
+        
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .link-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .fsrp-card:hover {
+            background-color: rgba(30, 100, 200, 0.2);
+            border: 1px solid rgba(30, 100, 200, 0.4);
+        }
+        
+        .discord-card:hover {
+            background-color: rgba(88, 101, 242, 0.3);
+            border: 1px solid rgba(88, 101, 242, 0.6);
+        }
+        
+        .roblox-card:hover {
+            background-color: rgba(226, 35, 26, 0.3);
+            border: 1px solid rgba(226, 35, 26, 0.6);
+        }
+        
+        .link-icon-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+        }
+        
+        .fsrp-icon-container {
+            background-color: transparent;
+            backdrop-filter: none;
+        }
+        
+        .link-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+        
+        .fsrp-icon {
+            filter: none;
+            opacity: 1;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .discord-icon {
+            filter: none;
+        }
+        
+        .link-text {
+            flex: 1;
+        }
+        
+        .link-title {
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .link-description {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .rank-badge {
+            background-color: #5865F2;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <img src="http://localhost/test/wp-content/uploads/2025/04/profile-pic.png" alt="Profile" class="profile-pic">
+            <h1>Potato</h1>
+            <p class="bio">Cool potato living za life</p>
+        </div>
+        
+        <div class="links">
+            <a href="https://discord.gg/xnBnqj2rqX" class="link-card fsrp-card" target="_blank">
+                <div class="link-icon-container fsrp-icon-container">
+                    <img src="http://localhost/test/wp-content/uploads/2025/04/fsrp-logo.png" class="link-icon fsrp-icon">
+                </div>
+                <div class="link-text">
+                    <div class="link-title">FSRP Discord
+                        <span class="rank-badge">Assistant Director</span>
+                    </div>
+                    <div class="link-description">Join Florida State Roleplay</div>
+                </div>
+            </a>
+            
+            <a href="https://discord.com/users/1084370357185675264" class="link-card discord-card" target="_blank">
+                <div class="link-icon-container">
+                    <img src="http://localhost/test/wp-content/uploads/2025/04/discord-icon.png" class="link-icon discord-icon">
+                </div>
+                <div class="link-text">
+                    <div class="link-title">My Discord Profile</div>
+                    <div class="link-description">Send me a message</div>
+                </div>
+            </a>
+            
+            <a href="https://www.roblox.com/users/3137593487/profile" class="link-card roblox-card" target="_blank">
+                <div class="link-icon-container">
+                    <img src="http://localhost/test/wp-content/uploads/2025/04/Roblox-logo.png" class="link-icon">
+                </div>
+                <div class="link-text">
+                    <div class="link-title">My Roblox Profile</div>
+                    <div class="link-description">Check out my games</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
