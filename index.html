@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- Enhanced Discord Embed Meta Tags -->
-<meta property="og:title" content="🥔 Potato's Information">
-<meta property="og:description" content="Cool potato living za life | FSRP Assistant Director | Connect with me!">
-<meta property="og:image" content="https://github.com/Poorpotato69/Potato-Card/blob/main/profile-pic.png?raw=true">
-<meta property="og:url" content="https://poorpotato69.github.io/Potato-Card/">
-<meta property="og:type" content="profile">
-<meta property="og:site_name" content="Potato's Information">
-<meta name="theme-color" content="#FF6B00">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Discord Embed Meta Tags -->
+    <meta property="og:title" content="🥔 Potato's Awesome Card">
+    <meta property="og:description" content="Cool potato living za life | FSRP Assistant Director | Connect with me!">
+    <meta property="og:image" content="https://github.com/Poorpotato69/Potato-Card/blob/main/profile-pic.png?raw=true">
+    <meta property="og:url" content="https://poorpotato69.github.io/Potato-Card/">
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="Potato's World">
+    <meta name="theme-color" content="#FF6B00">
     <title>Potato's Card</title>
     <style>
         * {
@@ -48,6 +44,35 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        /* Audio Control Button */
+        .audio-control {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #FF6B00;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .audio-control:hover {
+            transform: scale(1.1);
+            background-color: #FF8C42;
+        }
+        
+        .audio-control.muted {
+            background-color: #5865F2;
         }
         
         .profile {
@@ -186,6 +211,9 @@
 </head>
 <body>
     <div class="container">
+        <!-- Audio Control Button -->
+        <button class="audio-control" id="audioControl">🔊</button>
+        
         <div class="profile">
             <img src="https://github.com/Poorpotato69/Potato-Card/blob/main/profile-pic.png?raw=true" alt="Profile" class="profile-pic">
             <h1>Potato</h1>
@@ -226,5 +254,60 @@
             </a>
         </div>
     </div>
+
+    <!-- Audio Element -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://github.com/Poorpotato69/Potato-Card/raw/main/y2mate.com%20-%20Baby%20Shark%20%20CoComelon%20Nursery%20Rhymes%20%20Kids%20Songs-%5BAudioTrimmer.com%5D.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('backgroundMusic');
+            const audioControl = document.getElementById('audioControl');
+            let isPlaying = false;
+
+            // Try to play audio automatically (may be blocked by browser)
+            const playAudio = () => {
+                audio.play()
+                    .then(() => {
+                        isPlaying = true;
+                        audioControl.textContent = '🔊';
+                        audioControl.classList.remove('muted');
+                    })
+                    .catch(error => {
+                        console.log('Auto-play was prevented:', error);
+                        isPlaying = false;
+                        audioControl.textContent = '🔇';
+                        audioControl.classList.add('muted');
+                    });
+            };
+
+            // Initial play attempt
+            playAudio();
+
+            // Toggle audio on button click
+            audioControl.addEventListener('click', function() {
+                if (isPlaying) {
+                    audio.pause();
+                    audioControl.textContent = '🔇';
+                    audioControl.classList.add('muted');
+                    isPlaying = false;
+                } else {
+                    audio.play()
+                        .then(() => {
+                            audioControl.textContent = '🔊';
+                            audioControl.classList.remove('muted');
+                            isPlaying = true;
+                        });
+                }
+            });
+
+            // Handle when audio ends (though it should loop)
+            audio.addEventListener('ended', function() {
+                audio.currentTime = 0;
+                audio.play();
+            });
+        });
+    </script>
 </body>
 </html>
