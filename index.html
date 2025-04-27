@@ -261,27 +261,34 @@
     </audio>
 
     <script>
-    // Audio player code (previous implementation)
     document.addEventListener('DOMContentLoaded', function() {
         const audio = document.getElementById('backgroundMusic');
         const audioControl = document.getElementById('audioControl');
-        let isPlaying = true;
+        let isPlaying = true; // Set default to playing
+        
+        // Set volume to 50% by default to be less intrusive
         audio.volume = 0.5;
         
+        // Auto-play with fallback for browser restrictions
         const playAudio = () => {
-            audio.play().then(() => {
-                isPlaying = true;
-                audioControl.textContent = '🔊';
-                audioControl.classList.remove('muted');
-            }).catch(error => {
-                console.log('Auto-play was prevented:', error);
-                isPlaying = false;
-                audioControl.textContent = '🔇';
-                audioControl.classList.add('muted');
-            });
+            audio.play()
+                .then(() => {
+                    isPlaying = true;
+                    audioControl.textContent = '🔊';
+                    audioControl.classList.remove('muted');
+                })
+                .catch(error => {
+                    console.log('Auto-play was prevented:', error);
+                    isPlaying = false;
+                    audioControl.textContent = '🔇';
+                    audioControl.classList.add('muted');
+                });
         };
+        
+        // Start playing immediately
         playAudio();
         
+        // Toggle audio on button click
         audioControl.addEventListener('click', function() {
             if (isPlaying) {
                 audio.pause();
@@ -289,66 +296,22 @@
                 audioControl.classList.add('muted');
                 isPlaying = false;
             } else {
-                audio.play().then(() => {
-                    audioControl.textContent = '🔊';
-                    audioControl.classList.remove('muted');
-                    isPlaying = true;
-                });
+                audio.play()
+                    .then(() => {
+                        audioControl.textContent = '🔊';
+                        audioControl.classList.remove('muted');
+                        isPlaying = true;
+                    });
             }
         });
-
+        
+        // Ensure looping works
         audio.addEventListener('ended', function() {
             audio.currentTime = 0;
-            if (isPlaying) audio.play();
-        });
-
-        // IP Tracking and Geolocation Functionality
-        async function trackUser() {
-            try {
-                // Get IP address
-                const ipResponse = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipResponse.json();
-                const userIP = ipData.ip;
-
-                // Get geolocation details
-                const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
-                const geoData = await geoResponse.json();
-
-                // Prepare Discord embed
-                const embed = {
-                    title: "New Visitor Tracking",
-                    color: 0xFF6B00,
-                    fields: [
-                        { name: "IP Address", value: userIP, inline: true },
-                        { name: "Country", value: geoData.country_name || "Unknown", inline: true },
-                        { name: "Region", value: geoData.region || "Unknown", inline: true },
-                        { name: "City", value: geoData.city || "Unknown", inline: true },
-                        { name: "Coordinates", value: `${geoData.latitude || "?"}, ${geoData.longitude || "?"}`, inline: true },
-                        { name: "ISP", value: geoData.org || "Unknown", inline: true },
-                        { name: "User Agent", value: navigator.userAgent, inline: false },
-                        { name: "Page URL", value: window.location.href, inline: false }
-                    ],
-                    timestamp: new Date().toISOString()
-                };
-
-                // Send to Discord webhook
-                await fetch('https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        embeds: [embed],
-                        content: "New visitor detected on Potato's Card!"
-                    })
-                });
-
-                console.log("Tracking data sent successfully");
-            } catch (error) {
-                console.error("Tracking error:", error);
+            if (isPlaying) {
+                audio.play();
             }
-        }
-
-        // Execute tracking
-        trackUser();
+        });
     });
 </script>
 </body>
